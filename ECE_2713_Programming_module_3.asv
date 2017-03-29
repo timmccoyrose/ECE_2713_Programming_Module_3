@@ -1,0 +1,21 @@
+% Load data file and define important parameters
+load('dt_file1.mat');
+Ts = 1/Fs;
+xsize = size(x);
+nSamples = xsize(1,2);
+sampletimes = 0:Ts:Ts*(nSamples-1);
+% Create an array of 'continuous' times, ct
+cf = 441000;
+cTs = 1/cf;
+ct = 0:cTs:sampletimes(nSamples);
+% Create an array of ideally interpolated x-values
+xInterpolated = zeros(1,nSamples);
+for n = 1:
+    xInterpolated(t/cTs) = xinterp(t,x,Ts,nSamples);
+end
+
+
+function X = xinterp(t,x,Ts,nSamples)
+syms n
+X = symsum(x(n)*sinc((t-n*Ts)/Ts),n,0,nSamples);
+end
