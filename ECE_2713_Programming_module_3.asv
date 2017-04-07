@@ -1,21 +1,58 @@
 % Load data file and define important parameters
-load('dt_file1.mat');
-Ts = 1/Fs;
-xsize = size(x);
-nSamples = xsize(1,2);
-sampletimes = 0:Ts:Ts*(nSamples-1);
-% Create an array of 'continuous' times, ct
-cf = 441000;
-cTs = 1/cf;
-ct = 0:cTs:sampletimes(nSamples);
+% load('dt_file1.mat');
+% x = x(1:50000);
+% Ts = 1/Fs;
+% n = 0:(length(x)-1);
+% times = n*Ts;
+% Create an array of 'continuous' times
+% Fsc = 441000;
+% Tsc = 1/Fsc;
+% L = Fsc/Fs;
+% t = linspace(0,times(end),length(x)*L);
 % Create an array of ideally interpolated x-values
-xInterpolated = zeros(1,nSamples);
-for n = 1:
-    xInterpolated(t/cTs) = xinterp(t,x,Ts,nSamples);
-end
+% xinterp = zeros(1,length(t));
+% fprintf('Starting sinc interpolation\n');
+% for N = 1:length(t)
+%     xinterp(N) = sum(x.*sinc((t(N)-n*Ts)/Ts));
+% end
+% fprintf('Sinc interpolation done\n');
+% Create an array of sample-and-hold values
+% xheld = zeros(1,length(t));
+% Ntemp = 1;
+% for ntemp = 1:length(x)
+%     while Ntemp*Tsc < ntemp*Ts
+%         xheld(Ntemp) = x(ntemp);
+%         Ntemp = Ntemp + 1;
+%     end
+% end
+% filterCoeff = fir1(100,1/L);
+% xpractical = conv(xheld,filterCoeff);
+%plot(times(1:10),x(1:10),'*',t(1:10*L),xinterp(1:10*L));
 
+f = figure;
+p = uipanel('Parent',f,'BorderType','none'); 
+p.Title = 'Plots for dt\_file1'; 
+p.TitlePosition = 'centertop'; 
+p.FontSize = 12;
+p.FontWeight = 'bold';
 
-function X = xinterp(t,x,Ts,nSamples)
-syms n
-X = symsum(x(n)*sinc((t-n*Ts)/Ts),n,0,nSamples);
-end
+ax1 = subplot(4,1,1);
+plot(ax1,times,x);
+title(ax1,'x vs t');
+ylabel(ax1,'x[n] = x(n*Ts)');
+xlabel(ax1,'t');
+
+ax2 = subplot(4,1,2);
+plot(ax2,t,xideal);
+title(ax2,'x ideally interpolated vs t');
+ylabel(ax2,'x(t)');
+xlabel(ax2,'t');
+
+ax3 = subplot(4,1,3);
+plot(ax3,t,xpractical(1:length(t)));
+title(ax3,'x interpolated with the sample and hold method');
+ylabel(ax3,'x(t)');
+xlabel(ax3,'t');
+
+ax4 = subplot(4,1,4);
+plot(ax4
