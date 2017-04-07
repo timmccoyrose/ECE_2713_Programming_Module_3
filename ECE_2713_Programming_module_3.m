@@ -1,5 +1,5 @@
 % Load data file and define important parameters
-load('dt_file1.mat');
+load('dt_file2.mat');
 x = x(1:50000);
 Ts = 1/Fs;
 n = 0:(length(x)-1);
@@ -28,7 +28,7 @@ xpractical = conv(xheld,filterCoeff);
 % Plot everything in one gorgeous graphic
 f = figure;
 p = uipanel('Parent',f,'BorderType','none'); 
-p.Title = 'Plots for dt_file1'; 
+p.Title = 'Plots for dt_file2'; 
 p.TitlePosition = 'centertop'; 
 p.FontSize = 12;
 p.FontWeight = 'bold';
@@ -52,8 +52,8 @@ ylabel(ax3,'x(t)');
 xlabel(ax3,'t');
 
 ax4 = subplot(2,2,4,'Parent',p);
-plot(ax4,times(1:10),x(1:10),'*',t(1:10*L),xinterp(1:10*L),'-',t(1:10*L),xpractical(1:10*L),'--');
-title(ax4,'x and its interpolations over the first 10 samples of x');
+plot(ax4,times((length(x)-10):end),x((length(x)-10):end),'*',t((length(t)-(10*L)):length(t)),xinterp((length(t)-(10*L)):length(t)),'-',t((length(t)-(10*L)):length(t)),xpractical((length(t)-(10*L)):length(t)),'--');
+title(ax4,'x and its interpolations over the last 10 samples of x');
 ylabel(ax4,'x(t)');
 xlabel(ax4,'t');
 legend(ax4,'x[n]','x sinc interp','x sample/hold interp');
